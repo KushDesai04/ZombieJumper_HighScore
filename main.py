@@ -58,11 +58,14 @@ def sumbit(data):
   player_time = ""
   name = ""
   kills = ""
+  key = ""
   if request.method == "POST":
     print("POST REQUEST RECIEVED")
     name = request.form["username"]
     player_time = request.form["score"]
     kills = request.form["kills"]
+    key = request.form["key"]
+
 
 
     print(name, player_time, kills)
@@ -72,7 +75,9 @@ def sumbit(data):
     player_time = str(datetime.timedelta(seconds = player_time))[2:]
     print(type(kills))
     #Insert into database
-    insert((name,player_time,kills))
+
+    if key == app.config["SECRETKEY"]:
+      insert((name,player_time,kills))
 
     all = connect("SELECT * FROM Score")
     print(all)
