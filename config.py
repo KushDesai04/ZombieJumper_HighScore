@@ -1,5 +1,11 @@
+from os import path
+
+ROOT = path.dirname(path.realpath(__file__))
+
+
+
 class Config(object):
     TITLE = 'Zombie Jumper - High Scores'
-    DATABASE = 'HighScore.db'
+    DATABASE = path.join(ROOT, "HighScore.db")
     DEBUG = True
-    SECRET_KEY = 'Biden2020'
+    SECRET_KEY = 'HananFokkensPleaseStop!'
