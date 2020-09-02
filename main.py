@@ -44,7 +44,7 @@ def home():
 ## Show top 25 kills ##
 @app.route('/kills', methods = ["GET", "POST"])
 def kills():
-  kills = connect("SELECT name,kills FROM Score ORDER BY kills desc LIMIT 25")  
+  kills = connect("SELECT name,kills FROM Score ORDER BY kills desc LIMIT 25")
   print("KIllSS", kills)
   string = ""
   for i in kills:
@@ -53,36 +53,24 @@ def kills():
 
 
 ## Add high scores ##
-@app.route('/submit/<data>', methods = ["GET", "POST"])
+@app.route('/submit/<data>', methods = ["POST"])
 def sumbit(data):
   player_time = ""
   name = ""
   kills = ""
   key = ""
   if request.method == "POST":
-    print("POST REQUEST RECIEVED")
     name = request.form["username"]
     player_time = request.form["score"]
     kills = request.form["kills"]
     key = request.form["key"]
 
-
-
-    print(name, player_time, kills)
-
+    if key == app.config["SECRET_KEY"]:
     #Convert time to readable format
-    player_time = int(player_time)
-    player_time = str(datetime.timedelta(seconds = player_time))[2:]
-    print(type(kills))
-    #Insert into database
+        player_time = int(player_time)
+        if player_time > 3600:
+            player_time = str(datetime.timedelta(seconds = player_time))[2:]
+            insert((name,player_time,kills))
 
-    if key == app.config["SECRETKEY"]:
-      insert((name,player_time,kills))
-
-    all = connect("SELECT * FROM Score")
-    print(all)
-  return str(data)
-
-
-if __name__ == '__main__':
-    app.run(debug=app.config['DEBUG'], port=8080, host='0.0.0.0')
+    return "recieved"
+  return "outer"
